@@ -50,6 +50,12 @@ type MethodDict<Methods extends HttpMethod> = {
 };
 
 describe("HttpRequest", () => {
+  it("has a static json method", () => {
+    expect(HttpRequest).toHaveProperty("json", expect.typeOf("function"));
+    expect(
+      HttpRequest.json("https://example.com/", { foo: "bar" }),
+    ).toBeInstanceOf(JsonRequest);
+  });
   describe.each(
     Object.entries({
       GET: "get",
