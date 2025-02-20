@@ -32,6 +32,23 @@ const request = JsonRequest.json(
 );
 ```
 
+The `RequestInit` shape can also include a `replacer` argument, which is passed to `JSON.stringify` as the second argument.
+
+```ts
+const request = new JsonRequest(
+  "https://example.com/",
+  { foo: "bar", baz: "qux" },
+  { replacer: ["foo"] },
+);
+// is like
+const request = new Request("https://example.com/", {
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify({ foo: "bar", baz: "qux" }, ["foo"]),
+});
+```
+
 ## `HttpRequest`
 
 A class that extends `Request` with static methods for each HTTP method. These methods create a `Request` with the specified method.

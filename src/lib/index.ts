@@ -1,22 +1,28 @@
 import type { BodyHttpMethod, HttpMethod, RequestCreator } from "./types";
-import type { Overwrite } from "./util";
 import { assertCanHaveBody, mergeRequestInits } from "./util/http";
+
+interface JsonRequestInit extends Omit<RequestInit, "body"> {
+  method?: BodyHttpMethod;
+  replacer?:
+    | ((this: any, key: string, value: any) => any)
+    | Array<string | number>;
+}
 
 export class JsonRequest extends Request {
   constructor(
     input: RequestInfo | URL,
     body: any,
-    init?: Overwrite<Omit<RequestInit, "body">, { method?: BodyHttpMethod }>,
+    { replacer, ...init }: JsonRequestInit = {},
   ) {
-    if (init?.method) assertCanHaveBody(init.method);
+    if (init.method) assertCanHaveBody(init.method);
     super(
       input,
       mergeRequestInits(init, {
-        method: init?.method ?? "POST",
+        method: init.method ?? "POST",
         headers: {
           "content-type": "application/json",
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(body, replacer as never),
       }),
     );
   }
@@ -38,7 +44,7 @@ function makeBodyRequestHelper(method: BodyHttpMethod) {
     json(
       input: RequestInfo | URL,
       body: any,
-      init?: Omit<RequestInit, "body" | "method">,
+      init?: Omit<JsonRequestInit, "method">,
     ) {
       return new JsonRequest(input, body, { ...init, method });
     },

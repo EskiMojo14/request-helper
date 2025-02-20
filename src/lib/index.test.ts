@@ -34,6 +34,15 @@ describe("JsonRequest", () => {
       JsonRequest.json("https://example.com/", { foo: "bar" }),
     ).toBeInstanceOf(JsonRequest);
   });
+  it("allows passing replacer to JSON.stringify", async () => {
+    const body = { foo: "bar", baz: "qux" };
+    const request = new JsonRequest("https://example.com/", body, {
+      replacer: ["foo"],
+    });
+    await expect(request.text()).resolves.toBe(
+      JSON.stringify({ foo: "bar" }, ["foo"]),
+    );
+  });
 });
 
 type MethodDict<Methods extends HttpMethod> = {
