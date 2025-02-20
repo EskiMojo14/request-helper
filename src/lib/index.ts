@@ -6,15 +6,12 @@ export class JsonRequest extends Request {
   constructor(
     input: RequestInfo | URL,
     body: any,
-    init: Overwrite<
-      Omit<RequestInit, "body">,
-      { method?: BodyHttpMethod }
-    > = {},
+    init?: Overwrite<Omit<RequestInit, "body">, { method?: BodyHttpMethod }>,
   ) {
-    init.method ??= "POST";
     super(
       input,
       mergeRequestInits(init, {
+        method: init?.method ?? "POST",
         headers: {
           "content-type": "application/json",
         },
