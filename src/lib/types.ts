@@ -18,5 +18,7 @@ export const bodyMethodsSet = new Set<HttpMethod>(bodyHttpMethods);
 export type BodyHttpMethod = (typeof bodyHttpMethods)[number];
 export type BodylessHttpMethod = Exclude<HttpMethod, BodyHttpMethod>;
 
-export type RequestCreator<Args extends Array<unknown> = [init?: RequestInit]> =
-  (input: RequestInfo | URL, ...args: Args) => Request;
+export type RequestCreator<Init extends Partial<RequestInit> = RequestInit> = (
+  input: RequestInfo | URL,
+  init?: Init,
+) => Request;
