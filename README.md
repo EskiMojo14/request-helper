@@ -63,3 +63,34 @@ const request = HttpRequest.json("https://example.com/", { foo: "bar" });
 // is like
 const request = new JsonRequest("https://example.com/", { foo: "bar" });
 ```
+
+## `mergeHeaders` and `mergeRequestInits`
+
+Utility functions for merging headers and request inits. These are used internally by the other helpers, but may be useful in other contexts.
+
+```ts
+const headers = mergeHeaders(
+  { "content-type": "application/json", "x-foo": "bar" },
+  { "content-type": "application/xml" },
+);
+// is like
+const headers = new Headers();
+headers.set("content-type", "application/json");
+headers.set("x-foo", "bar");
+headers.set("content-type", "application/xml");
+```
+
+```ts
+const init = mergeRequestInits(
+  { method: "POST", headers: { "content-type": "application/json" } },
+  { headers: { "x-foo": "bar" } },
+);
+// is like
+const init = {
+  method: "POST",
+  headers: mergeHeaders(
+    { "content-type": "application/json" },
+    { "x-foo": "bar" },
+  ),
+};
+```
