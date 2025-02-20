@@ -1,3 +1,4 @@
+export type { JsonRequestInit } from "./lib";
 export { JsonRequest, HttpRequest } from "./lib";
 export type {
   BodyHttpMethod,

@@ -1,7 +1,7 @@
 import type { BodyHttpMethod, HttpMethod, RequestCreator } from "./types";
 import { assertCanHaveBody, mergeRequestInits } from "./util/http";
 
-interface JsonRequestInit extends Omit<RequestInit, "body"> {
+export interface JsonRequestInit extends Omit<RequestInit, "body"> {
   method?: BodyHttpMethod;
   replacer?:
     | ((this: any, key: string, value: any) => any)
