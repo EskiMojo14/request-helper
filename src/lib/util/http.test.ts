@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { mergeHeaders, mergeRequestInits } from "./http";
+import { mergeHeaderInits, mergeRequestInits } from "./http";
 
-describe("mergeHeaders", () => {
+describe("mergeHeaderInits", () => {
   it("merges headers", () => {
-    const headers = mergeHeaders(
+    const headers = mergeHeaderInits(
       { "content-type": "application/json", "x-foo": "bar" },
       { "content-type": "application/xml" },
     );
@@ -11,7 +11,7 @@ describe("mergeHeaders", () => {
     expect(headers.get("x-foo")).toBe("bar");
   });
   it("ignores undefined", () => {
-    const headers = mergeHeaders(
+    const headers = mergeHeaderInits(
       { "content-type": "application/json" },
       undefined,
     );

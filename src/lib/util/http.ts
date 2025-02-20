@@ -18,7 +18,7 @@ const setManyHeaders = (headers: Headers, headersInit: HeadersInit) => {
     headers.set(key, value);
 };
 
-export function mergeHeaders(
+export function mergeHeaderInits(
   ...headers: Array<HeadersInit | undefined>
 ): Headers {
   const result = new Headers();

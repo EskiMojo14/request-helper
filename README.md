@@ -79,12 +79,12 @@ const request = HttpRequest.json("https://example.com/", { foo: "bar" });
 const request = new JsonRequest("https://example.com/", { foo: "bar" });
 ```
 
-## `mergeHeaders` and `mergeRequestInits`
+## `mergeHeaderInits` and `mergeRequestInits`
 
-Utility functions for merging headers and request inits. These are used internally by the other helpers, but may be useful in other contexts.
+Utility functions for merging header and request inits. These are used internally by the other helpers, but may be useful in other contexts.
 
 ```ts
-const headers = mergeHeaders(
+const headers = mergeHeaderInits(
   { "content-type": "application/json", "x-foo": "bar" },
   { "content-type": "application/xml" },
 );
@@ -103,7 +103,7 @@ const init = mergeRequestInits(
 // is like
 const init = {
   method: "POST",
-  headers: mergeHeaders(
+  headers: mergeHeaderInits(
     { "content-type": "application/json" },
     { "x-foo": "bar" },
   ),
