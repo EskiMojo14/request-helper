@@ -1,9 +1,9 @@
 import type { BodyHttpMethod, HttpMethod, RequestCreator } from "./types";
 import type { Overwrite } from "./util";
-import { jsonInit, mergeRequestInits } from "./util/http";
+import { mergeRequestInits } from "./util/http";
 
 export class JsonRequest extends Request {
-  static json(
+  constructor(
     input: RequestInfo | URL,
     body: any,
     init: Overwrite<
@@ -12,14 +12,25 @@ export class JsonRequest extends Request {
     > = {},
   ) {
     init.method ??= "POST";
-    return new Request(input, mergeRequestInits(init, jsonInit(body)));
+    super(
+      input,
+      mergeRequestInits(init, {
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      }),
+    );
+  }
+  static json(...args: ConstructorParameters<typeof JsonRequest>) {
+    return new JsonRequest(...args);
   }
 }
 
 const makeBodylessRequestHelper =
   (method: HttpMethod): RequestCreator<[init?: Omit<RequestInit, "body">]> =>
   (input, init) =>
-    new Request(input, mergeRequestInits(init, { method }));
+    new Request(input, { ...init, method });
 
 function makeBodyRequestHelper(method: BodyHttpMethod) {
   // annotate to allow body
@@ -31,12 +42,15 @@ function makeBodyRequestHelper(method: BodyHttpMethod) {
       body: any,
       init?: Omit<RequestInit, "body" | "method">,
     ) {
-      return baseHelper(input, mergeRequestInits(init, jsonInit(body)));
+      return new JsonRequest(input, body, { ...init, method });
     },
   });
 }
 
-export class HttpRequest extends JsonRequest {
+export class HttpRequest extends Request {
+  static json(...args: ConstructorParameters<typeof JsonRequest>) {
+    return new JsonRequest(...args);
+  }
   // bodyless methods
   static get = makeBodylessRequestHelper("GET");
   static head = makeBodylessRequestHelper("HEAD");

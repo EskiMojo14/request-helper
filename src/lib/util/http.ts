@@ -43,10 +43,3 @@ export function mergeRequestInits(
   }
   return { ...result, headers: resultHeaders };
 }
-
-export const jsonInit = (body: any): RequestInit => ({
-  headers: {
-    "content-type": "application/json",
-  },
-  body: JSON.stringify(body),
-});

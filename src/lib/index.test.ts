@@ -3,12 +3,9 @@ import type { BodylessHttpMethod, BodyHttpMethod, HttpMethod } from "./types";
 import { HttpRequest, JsonRequest } from ".";
 
 describe("JsonRequest", () => {
-  it("exposes json helper", () => {
-    expect(JsonRequest).toHaveProperty("json", expect.typeOf("function"));
-  });
   it("creates a request with json body, defaulting to POST", async () => {
     const body = { foo: "bar" };
-    const request = JsonRequest.json("https://example.com/", body);
+    const request = new JsonRequest("https://example.com/", body);
     expect(request.url).toBe("https://example.com/");
     expect(request.method).toBe("POST");
     expect(request.headers.get("content-type")).toBe("application/json");
@@ -17,10 +14,16 @@ describe("JsonRequest", () => {
   });
   it("allows overriding method", () => {
     const body = { foo: "bar" };
-    const request = JsonRequest.json("https://example.com/", body, {
+    const request = new JsonRequest("https://example.com/", body, {
       method: "PUT",
     });
     expect(request.method).toBe("PUT");
+  });
+  it("has a static json method", () => {
+    expect(JsonRequest).toHaveProperty("json", expect.typeOf("function"));
+    expect(
+      JsonRequest.json("https://example.com/", { foo: "bar" }),
+    ).toBeInstanceOf(JsonRequest);
   });
 });
 
