@@ -39,9 +39,7 @@ A class that extends `Request` with static methods for each HTTP method. These m
 ```ts
 const request = HttpRequest.get("https://example.com/");
 // is like
-const request = new Request("https://example.com/", {
-  method: "GET",
-});
+const request = new Request("https://example.com/", { method: "GET" });
 ```
 
 For methods that support a body, there is also a `json` helper that creates a `JsonRequest` with the specified method.
