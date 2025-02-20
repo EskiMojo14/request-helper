@@ -9,15 +9,12 @@ export interface JsonRequestInit extends Omit<RequestInit, "body"> {
 }
 
 export class JsonRequest extends Request {
-  constructor(
-    input: RequestInfo | URL,
-    body: any,
-    { replacer, ...init }: JsonRequestInit = {},
-  ) {
+  constructor(input: RequestInfo | URL, body: any, init: JsonRequestInit = {}) {
     if (init.method) assertCanHaveBody(init.method);
+    const { replacer, ...rest } = init;
     super(
       input,
-      mergeRequestInits(init, {
+      mergeRequestInits(rest, {
         method: init.method ?? "POST",
         headers: {
           "content-type": "application/json",
