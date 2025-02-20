@@ -64,13 +64,11 @@ For methods that support a body, there is also a `json` helper that creates a `J
 ```ts
 const request = HttpRequest.post.json("https://example.com/", { foo: "bar" });
 // is like
-const request = new Request("https://example.com/", {
-  method: "POST",
-  headers: {
-    "content-type": "application/json",
-  },
-  body: JSON.stringify({ foo: "bar" }),
-});
+const request = new JsonRequest(
+  "https://example.com/",
+  { foo: "bar" },
+  { method: "POST" },
+);
 ```
 
 `HttpRequest.json` is also available for convenience, which is the same as `JsonRequest.json`.
