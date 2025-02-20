@@ -4,9 +4,7 @@ export type HttpMethod =
   | "POST"
   | "PUT"
   | "DELETE"
-  | "CONNECT"
   | "OPTIONS"
-  | "TRACE"
   | "PATCH";
 
 export const bodyHttpMethods = [

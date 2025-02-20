@@ -61,21 +61,16 @@ describe("HttpRequest", () => {
       GET: "get",
       HEAD: "head",
       OPTIONS: "options",
-      CONNECT: "connect",
-      TRACE: "trace",
     } satisfies MethodDict<BodylessHttpMethod>),
   )("bodyless method %s", (method, helper) => {
     it(`exposes ${helper} helper`, () => {
       expect(HttpRequest).toHaveProperty(helper, expect.typeOf("function"));
     });
-    // not supported
-    if (method !== "CONNECT" && method !== "TRACE") {
-      it("creates a request with method", () => {
-        const request = HttpRequest[helper]("https://example.com/");
-        expect(request.url).toBe("https://example.com/");
-        expect(request.method).toBe(method);
-      });
-    }
+    it("creates a request with method", () => {
+      const request = HttpRequest[helper]("https://example.com/");
+      expect(request.url).toBe("https://example.com/");
+      expect(request.method).toBe(method);
+    });
   });
   describe.each(
     Object.entries({

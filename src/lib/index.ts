@@ -61,8 +61,6 @@ export class HttpRequest extends Request {
   static get = makeBodylessRequestHelper("GET");
   static head = makeBodylessRequestHelper("HEAD");
   static options = makeBodylessRequestHelper("OPTIONS");
-  static connect = makeBodylessRequestHelper("CONNECT");
-  static trace = makeBodylessRequestHelper("TRACE");
   // body methods
   static post = makeBodyRequestHelper("POST");
   static delete = makeBodyRequestHelper("DELETE");
