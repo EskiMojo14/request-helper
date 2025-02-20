@@ -40,7 +40,7 @@ describe("JsonRequest", () => {
       replacer: ["foo"],
     });
     await expect(request.text()).resolves.toBe(
-      JSON.stringify({ foo: "bar" }, ["foo"]),
+      JSON.stringify({ foo: "bar", baz: "qux" }, ["foo"]),
     );
   });
 });
