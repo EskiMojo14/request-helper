@@ -4,7 +4,7 @@ Extra utilities for working with `Request` objects.
 
 ## `JsonRequest`
 
-A subclass of `Request` that automatically sets the `content-type` header to `application/json` and stringifies the body. Method defaults to `POST` if not specified.
+A subclass of `Request` that automatically sets the `content-type` header to `application/json` and stringifies the body. Method defaults to `POST` if not specified, and throws if the method does not support a body.
 
 ```ts
 const request = new JsonRequest(

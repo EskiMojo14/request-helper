@@ -19,6 +19,15 @@ describe("JsonRequest", () => {
     });
     expect(request.method).toBe("PUT");
   });
+  it("throws if method is not a body method", () => {
+    expect(() => {
+      new JsonRequest(
+        "https://example.com/",
+        { foo: "bar" },
+        { method: "GET" as never },
+      );
+    }).toThrowError(new TypeError("Method GET cannot have a body"));
+  });
   it("has a static json method", () => {
     expect(JsonRequest).toHaveProperty("json", expect.typeOf("function"));
     expect(

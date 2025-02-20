@@ -1,6 +1,6 @@
 import type { BodyHttpMethod, HttpMethod, RequestCreator } from "./types";
 import type { Overwrite } from "./util";
-import { mergeRequestInits } from "./util/http";
+import { assertCanHaveBody, mergeRequestInits } from "./util/http";
 
 export class JsonRequest extends Request {
   constructor(
@@ -8,6 +8,7 @@ export class JsonRequest extends Request {
     body: any,
     init?: Overwrite<Omit<RequestInit, "body">, { method?: BodyHttpMethod }>,
   ) {
+    if (init?.method) assertCanHaveBody(init.method);
     super(
       input,
       mergeRequestInits(init, {

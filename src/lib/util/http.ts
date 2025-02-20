@@ -6,7 +6,7 @@ export function assertCanHaveBody(
   method: HttpMethod,
 ): asserts method is BodyHttpMethod {
   if (!bodyMethodsSet.has(method)) {
-    throw new Error(`Method ${method} cannot have a body`);
+    throw new TypeError(`Method ${method} cannot have a body`);
   }
 }
 
