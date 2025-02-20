@@ -32,7 +32,9 @@ export class JsonRequest extends Request {
 }
 
 const makeBodylessRequestHelper =
-  (method: HttpMethod): RequestCreator<[init?: Omit<RequestInit, "body">]> =>
+  (
+    method: HttpMethod,
+  ): RequestCreator<[init?: Omit<RequestInit, "body" | "method">]> =>
   (input, init) =>
     new Request(input, { ...init, method });
 
