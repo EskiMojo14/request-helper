@@ -42,8 +42,7 @@
       "esm",
       "cjs"
     ],
-    "dts": true,
-    "minify": true
+    "dts": true
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.17.3",
