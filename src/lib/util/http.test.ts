@@ -33,4 +33,16 @@ describe("mergeRequestInits", () => {
     const init = mergeRequestInits({ method: "POST" }, undefined);
     expect(init.method).toBe("POST");
   });
+  it("merges signals", () => {
+    const ac1 = new AbortController();
+    const ac2 = new AbortController();
+    const init = mergeRequestInits(
+      { signal: ac1.signal },
+      { signal: ac2.signal },
+    );
+    expect(init.signal).toBeInstanceOf(AbortSignal);
+    expect(init.signal.aborted).toBe(false);
+    ac1.abort();
+    expect(init.signal.aborted).toBe(true);
+  });
 });

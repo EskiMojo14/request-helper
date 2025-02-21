@@ -30,16 +30,22 @@ export function mergeHeaderInits(
 
 export function mergeRequestInits(
   ...inits: Array<RequestInit | undefined>
-): RequestInit & { headers: Headers } {
+): RequestInit & { headers: Headers; signal: AbortSignal } {
   const result: RequestInit = {};
   const resultHeaders = new Headers();
+  const signals: Array<AbortSignal> = [];
   for (const init of inits) {
     if (!init) continue;
 
-    const { headers, ...rest } = init;
+    const { headers, signal, ...rest } = init;
     safeAssign(result, rest);
 
     if (headers) setManyHeaders(resultHeaders, headers);
+    if (signal) signals.push(signal);
   }
-  return { ...result, headers: resultHeaders };
+  return {
+    ...result,
+    headers: resultHeaders,
+    signal: AbortSignal.any(signals),
+  };
 }
