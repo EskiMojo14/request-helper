@@ -5,4 +5,4 @@ export type {
   BodylessHttpMethod,
   HttpMethod,
 } from "./lib/types";
-export { mergeHeaderInits, mergeRequestInits } from "./lib/util/http";
+export { mergeHeaderInits, mergeRequestInits } from "./lib/util/fetch";

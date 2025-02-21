@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { mergeHeaderInits, mergeRequestInits } from "./http";
+import { mergeHeaderInits, mergeRequestInits } from "./fetch";
 
 describe("mergeHeaderInits", () => {
   it("merges headers", () => {

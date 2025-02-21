@@ -1,5 +1,5 @@
 import type { BodyHttpMethod, HttpMethod, RequestCreator } from "./types";
-import { assertCanHaveBody, mergeRequestInits } from "./util/http";
+import { assertCanHaveBody, mergeRequestInits } from "./util/fetch";
 
 export interface JsonRequestInit extends Omit<RequestInit, "body"> {
   method?: BodyHttpMethod;
