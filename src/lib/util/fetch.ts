@@ -30,7 +30,7 @@ export function mergeHeaderInits(
 
 export function mergeRequestInits(
   ...inits: Array<RequestInit | undefined>
-): RequestInit & { headers: Headers; signal: AbortSignal } {
+): RequestInit & { headers: Headers } {
   const result: RequestInit = {};
   const resultHeaders = new Headers();
   const signals: Array<AbortSignal> = [];
@@ -43,9 +43,11 @@ export function mergeRequestInits(
     if (headers) setManyHeaders(resultHeaders, headers);
     if (signal) signals.push(signal);
   }
+  if (signals.length === 1) result.signal = signals[0];
+  else if (signals.length) result.signal = AbortSignal.any(signals);
+
   return {
     ...result,
     headers: resultHeaders,
-    signal: AbortSignal.any(signals),
   };
 }
