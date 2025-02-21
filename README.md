@@ -52,6 +52,23 @@ const request = new Request("https://example.com/", {
 });
 ```
 
+## `FormDataRequest`
+
+A subclass of `Request` that automatically sets the body to the provided `FormData` object. (_Content-Type header is set automatically by browser_) Method defaults to `POST` if not specified, and throws if the method does not support a body.
+
+```ts
+const request = new FormDataRequest("https://example.com/", new FormData(), {
+  method: "PUT",
+});
+// is like
+const request = new Request("https://example.com/", {
+  method: "PUT",
+  body: new FormData(),
+});
+```
+
+Also has a static `formData` method which accepts the same arguments as the constructor.
+
 ## `HttpRequest`
 
 A class that extends `Request` with static methods for each HTTP method. These methods create a `Request` with the specified method.
@@ -74,12 +91,18 @@ const request = new JsonRequest(
 );
 ```
 
-`HttpRequest.json` is also available for convenience, which is the same as `JsonRequest.json`.
+`HttpRequest.json` and `HttpRequest.formData` are also available for convenience.
 
 ```ts
 const request = HttpRequest.json("https://example.com/", { foo: "bar" });
 // is like
 const request = new JsonRequest("https://example.com/", { foo: "bar" });
+```
+
+```ts
+const request = HttpRequest.formData("https://example.com/", new FormData());
+// is like
+const request = new FormDataRequest("https://example.com/", new FormData());
 ```
 
 ## `mergeHeaderInits` and `mergeRequestInits`

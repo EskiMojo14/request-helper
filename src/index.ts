@@ -1,5 +1,5 @@
-export type { JsonRequestInit } from "./lib";
-export { JsonRequest, HttpRequest } from "./lib";
+export type { JsonRequestInit, FormDataRequestInit } from "./lib";
+export { JsonRequest, FormDataRequest, HttpRequest } from "./lib";
 export type {
   BodyHttpMethod,
   BodylessHttpMethod,

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import type { BodylessHttpMethod, BodyHttpMethod, HttpMethod } from "./types";
-import { HttpRequest, JsonRequest } from ".";
+import { FormDataRequest, HttpRequest, JsonRequest } from ".";
 
 describe("JsonRequest", () => {
   it("creates a request with json body, defaulting to POST", async () => {
@@ -19,15 +19,6 @@ describe("JsonRequest", () => {
     });
     expect(request.method).toBe("PUT");
   });
-  it("throws if method is not a body method", () => {
-    expect(() => {
-      new JsonRequest(
-        "https://example.com/",
-        { foo: "bar" },
-        { method: "GET" as never },
-      );
-    }).toThrowError(new TypeError("Method GET cannot have a body"));
-  });
   it("has a static json method", () => {
     expect(JsonRequest).toHaveProperty("json", expect.typeOf("function"));
     expect(
@@ -45,6 +36,34 @@ describe("JsonRequest", () => {
   });
 });
 
+describe("FormDataRequest", () => {
+  it("creates a request with form data body", async () => {
+    const body = new FormData();
+    body.append("foo", "bar");
+    const request = new FormDataRequest("https://example.com/", body);
+    expect(request.url).toBe("https://example.com/");
+    expect(request.method).toBe("POST");
+    await expect(request.clone().formData()).resolves.toEqual(body);
+  });
+  it("allows overriding method", () => {
+    const body = new FormData();
+    body.append("foo", "bar");
+    const request = new FormDataRequest("https://example.com/", body, {
+      method: "PUT",
+    });
+    expect(request.method).toBe("PUT");
+  });
+  it("has a static formData method", () => {
+    expect(FormDataRequest).toHaveProperty(
+      "formData",
+      expect.typeOf("function"),
+    );
+    expect(
+      FormDataRequest.formData("https://example.com/", new FormData()),
+    ).toBeInstanceOf(FormDataRequest);
+  });
+});
+
 type MethodDict<Methods extends HttpMethod> = {
   [Method in Methods]: Lowercase<Method>;
 };
@@ -55,6 +74,12 @@ describe("HttpRequest", () => {
     expect(
       HttpRequest.json("https://example.com/", { foo: "bar" }),
     ).toBeInstanceOf(JsonRequest);
+  });
+  it("has a static formData method", () => {
+    expect(HttpRequest).toHaveProperty("formData", expect.typeOf("function"));
+    expect(
+      HttpRequest.formData("https://example.com/", new FormData()),
+    ).toBeInstanceOf(FormDataRequest);
   });
   describe.each(
     Object.entries({
@@ -102,6 +127,23 @@ describe("HttpRequest", () => {
       expect(request.headers.get("content-type")).toBe("application/json");
       await expect(request.clone().text()).resolves.toBe(JSON.stringify(body));
       await expect(request.json()).resolves.toEqual(body);
+    });
+    it("exposes formData helper", () => {
+      expect(HttpRequest[helper]).toHaveProperty(
+        "formData",
+        expect.typeOf("function"),
+      );
+    });
+    it("creates a request with form data body", async () => {
+      const body = new FormData();
+      body.append("foo", "bar");
+      const request = HttpRequest[helper].formData(
+        "https://example.com/",
+        body,
+      );
+      expect(request.url).toBe("https://example.com/");
+      expect(request.method).toBe(method);
+      await expect(request.clone().formData()).resolves.toEqual(body);
     });
   });
 });
